@@ -1,7 +1,7 @@
 define endian=little;
 define alignment=4;
 
-define space RAM typ=ram_space size=4 default;
+define space ram typ=ram_space size=4 default;
 define space register type=register_space size=4;
 
 define register size=4 [
@@ -41,3 +41,56 @@ attaach variables [ r x y ] [
     at0 at1
     ra fp gp sp pc
 ];
+
+##################################
+# Memory load/store instructions #
+##################################
+:ldb r [x + y + o] is opcode=0b00000 & E=0 {
+    local tgt = x + y + o;
+    r = zext(*[ram]:1 tgt);
+}
+:ldbs r [x + y + o] is opcode=0b00000 & E=1 {
+    local tgt = x + y + o;
+    r = sext(*[ram]:1 tgt);
+}
+:ldh r [x + y + o] is opcode=0b00001 & E=0 {
+    local tgt = x + y + o;
+    r = zext(*[ram]:2 tgt);
+}
+:ldhs r [x + y + o] is opcode=0b00001 & E=1 {
+    local tgt = x + y + o;
+    r = sext(*[ram]:2 tgt);
+}
+:ldw r [x + y + o] is opcode=0b00010 & E=0 {
+    local tgt = x + y + o;
+    r = *[ram]:4 tgt;
+}
+
+:stb r [x + y + o] is opcode=0b00100 & E=0 {
+    local tgt = x + y + o;
+    *[ram]:1 tgt = r;
+}
+:sth r [x + y + o] is opcode=0b00101 & E=0 {
+    local tgt = x + y + o;
+    *[ram]:2 tgt = r;
+}
+:stw r [x + y + o] is opcode=0b00110 & E=0 {
+    local tgt = x + y + o;
+    *[ram]:4 tgt = r;
+}
+
+###########################
+# Arithmetic instructions #
+###########################
+:add r, x, y, o is opcode=0b01000 & E=0 {
+    r = x + y + o;
+}
+:mul r, x, y, o is opcode=0b01000 & E=0 {
+    r = x * (y + o);
+}
+:div r, x, y, o is opcode=0b01000 & E=0 {
+    r = x / (y + o);
+}
+:divi r, x, y, o is opcode=0b01000 & E=1 {
+    r = x s/ (y + o);
+}
