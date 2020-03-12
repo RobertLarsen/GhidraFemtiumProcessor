@@ -94,3 +94,46 @@ attach variables [ r x y ] [
 :divi r, x, y, o is opcode=0b01010 & E=1 & r & x & y & o {
     r = x s/ (y + o);
 }
+:nor r, x, y, o is opcode=0b01011 & E=0 & r & x & y & o {
+    r = ~(x | y | o);
+}
+
+#######################
+# Masking instruction #
+#######################
+:shl r, x, y, s is opcode=0b01100 & m=0b0000 & r & x & y & s {
+    r = x << (y + s);
+}
+:shr r, x, y, s is opcode=0b01100 & m=0b0001 & r & x & y & s {
+    r = x >> (y + s);
+}
+:sar r, x, y, s is opcode=0b01100 & m=0b0010 & r & x & y & s {
+    r = x s>> (y + s);
+}
+:shlo r, x, y, s is opcode=0b01100 & m=0b0100 & r & x & y & s {
+    r = r | (x << (y + s));
+}
+:shro r, x, y, s is opcode=0b01100 & m=0b0101 & r & x & y & s {
+    r = r | (x >> (y + s));
+}
+:saro r, x, y, s is opcode=0b01100 & m=0b0110 & r & x & y & s {
+    r = r | (x s>> (y + s));
+}
+:shla r, x, y, s is opcode=0b01100 & m=0b1000 & r & x & y & s {
+    r = r & (x << (y + s));
+}
+:shra r, x, y, s is opcode=0b01100 & m=0b1001 & r & x & y & s {
+    r = r & (x >> (y + s));
+}
+:sara r, x, y, s is opcode=0b01100 & m=0b1010 & r & x & y & s {
+    r = r & (x s>> (y + s));
+}
+:shlx r, x, y, s is opcode=0b01100 & m=0b1100 & r & x & y & s {
+    r = r ^ (x << (y + s));
+}
+:shrx r, x, y, s is opcode=0b01100 & m=0b1101 & r & x & y & s {
+    r = r ^ (x >> (y + s));
+}
+:sarx r, x, y, s is opcode=0b01100 & m=0b1110 & r & x & y & s {
+    r = r ^ (x s>> (y + s));
+}
