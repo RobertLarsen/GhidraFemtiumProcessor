@@ -1,16 +1,16 @@
 define endian=little;
 define alignment=4;
 
-define space ram typ=ram_space size=4 default;
+define space ram type=ram_space size=4 wordsize=4 default;
 define space register type=register_space size=4;
 
-define register size=4 [
+define register offset=0 size=4 [
     zz
     v0 v1
     a0 a1 a2 a3 a4 a5 a6
     s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19
     t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21
-    x y z
+    xr yr zr
     k0 k1
     at0 at1
     ra fp gp sp pc
@@ -30,13 +30,13 @@ define token instr(32)
     j      = (5, 14)
 ;
 
-attaach variables [ r x y ] [
+attach variables [ r x y ] [
     zz
     v0 v1
     a0 a1 a2 a3 a4 a5 a6
     s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19
     t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21
-    x y z
+    xr yr zr
     k0 k1
     at0 at1
     ra fp gp sp pc
@@ -45,36 +45,36 @@ attaach variables [ r x y ] [
 ##################################
 # Memory load/store instructions #
 ##################################
-:ldb r [x + y + o] is opcode=0b00000 & E=0 {
+:ldb r [x + y + o] is opcode=0b00000 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     r = zext(*[ram]:1 tgt);
 }
-:ldbs r [x + y + o] is opcode=0b00000 & E=1 {
+:ldbs r [x + y + o] is opcode=0b00000 & E=1 & r & x & y & o {
     local tgt = x + y + o;
     r = sext(*[ram]:1 tgt);
 }
-:ldh r [x + y + o] is opcode=0b00001 & E=0 {
+:ldh r [x + y + o] is opcode=0b00001 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     r = zext(*[ram]:2 tgt);
 }
-:ldhs r [x + y + o] is opcode=0b00001 & E=1 {
+:ldhs r [x + y + o] is opcode=0b00001 & E=1 & r & x & y & o {
     local tgt = x + y + o;
     r = sext(*[ram]:2 tgt);
 }
-:ldw r [x + y + o] is opcode=0b00010 & E=0 {
+:ldw r [x + y + o] is opcode=0b00010 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     r = *[ram]:4 tgt;
 }
 
-:stb r [x + y + o] is opcode=0b00100 & E=0 {
+:stb r [x + y + o] is opcode=0b00100 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     *[ram]:1 tgt = r;
 }
-:sth r [x + y + o] is opcode=0b00101 & E=0 {
+:sth r [x + y + o] is opcode=0b00101 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     *[ram]:2 tgt = r;
 }
-:stw r [x + y + o] is opcode=0b00110 & E=0 {
+:stw r [x + y + o] is opcode=0b00110 & E=0 & r & x & y & o {
     local tgt = x + y + o;
     *[ram]:4 tgt = r;
 }
@@ -82,15 +82,15 @@ attaach variables [ r x y ] [
 ###########################
 # Arithmetic instructions #
 ###########################
-:add r, x, y, o is opcode=0b01000 & E=0 {
+:add r, x, y, o is opcode=0b01000 & E=0 & r & x & y & o {
     r = x + y + o;
 }
-:mul r, x, y, o is opcode=0b01000 & E=0 {
+:mul r, x, y, o is opcode=0b01001 & E=0 & r & x & y & o {
     r = x * (y + o);
 }
-:div r, x, y, o is opcode=0b01000 & E=0 {
+:div r, x, y, o is opcode=0b01010 & E=0 & r & x & y & o {
     r = x / (y + o);
 }
-:divi r, x, y, o is opcode=0b01000 & E=1 {
+:divi r, x, y, o is opcode=0b01010 & E=1 & r & x & y & o {
     r = x s/ (y + o);
 }
