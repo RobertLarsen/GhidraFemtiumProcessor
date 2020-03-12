@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo "Stopping all daemons.."
+
+if [[ $1 == "-9" ]]; then
+    pidof emulator pbpd proxy UPDATEd | xargs sudo kill -9
+else
+    pidof emulator pbpd proxy UPDATEd | xargs sudo kill
+fi

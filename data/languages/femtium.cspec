@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compiler_spec>
+    <global>
+        <range space="RAM"/>
+    </global>
+    <stackpointer register="sp" space="RAM"/>
+    <returnaddress>
+        <register name="ra"/>
+    </returnaddress>
+    <default_proto>
+        <prototype name="__stdcall" extrapop="8" stackshift="8">
+            <input>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a0"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a1"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a2"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a3"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a4"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a5"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a6"/>
+                </pentry>
+            </input>
+            <output>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a0"/>
+                </pentry>
+                <pentry minsize="1" maxsize="4">
+                    <register name="a1"/>
+                </pentry>
+            </output>
+            <killedbycall>
+                <register name="t0"/>
+                <register name="t1"/>
+                <register name="t2"/>
+                <register name="t3"/>
+                <register name="t4"/>
+                <register name="t5"/>
+                <register name="t6"/>
+                <register name="t7"/>
+                <register name="t8"/>
+                <register name="t9"/>
+                <register name="t10"/>
+                <register name="t11"/>
+                <register name="t12"/>
+                <register name="t13"/>
+                <register name="t14"/>
+                <register name="t15"/>
+                <register name="t16"/>
+                <register name="t17"/>
+                <register name="t18"/>
+                <register name="t19"/>
+                <register name="t20"/>
+                <register name="t21"/>
+            </killedbycall>
+            <unaffected>
+                <register name="s0"/>
+                <register name="s1"/>
+                <register name="s2"/>
+                <register name="s3"/>
+                <register name="s4"/>
+                <register name="s5"/>
+                <register name="s6"/>
+                <register name="s7"/>
+                <register name="s8"/>
+                <register name="s9"/>
+                <register name="s10"/>
+                <register name="s11"/>
+                <register name="s12"/>
+                <register name="s13"/>
+                <register name="s14"/>
+                <register name="s15"/>
+                <register name="s16"/>
+                <register name="s17"/>
+                <register name="s18"/>
+                <register name="s19"/>
+            </unaffected>
+        </prototype>
+    </default_proto>
+</compiler_spec>

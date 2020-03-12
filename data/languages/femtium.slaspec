@@ -1,0 +1,43 @@
+define endian=little;
+define alignment=4;
+
+define space RAM typ=ram_space size=4 default;
+define space register type=register_space size=4;
+
+define register size=4 [
+    zz
+    v0 v1
+    a0 a1 a2 a3 a4 a5 a6
+    s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19
+    t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21
+    x y z
+    k0 k1
+    at0 at1
+    ra fp gp sp pc
+];
+
+define token instr(32)
+    opcode = (27, 31)
+    r      = (21, 26)
+    x      = (15, 20)
+    y      = (9, 14)
+    E      = (8, 8)
+    o      = (0, 7)
+    m      = (5, 8)
+    s      = (0, 4)
+    i      = (5, 20)
+    c      = (0, 3)
+    j      = (5, 14)
+;
+
+attaach variables [ r x y ] [
+    zz
+    v0 v1
+    a0 a1 a2 a3 a4 a5 a6
+    s0 s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 s11 s12 s13 s14 s15 s16 s17 s18 s19
+    t0 t1 t2 t3 t4 t5 t6 t7 t8 t9 t10 t11 t12 t13 t14 t15 t16 t17 t18 t19 t20 t21
+    x y z
+    k0 k1
+    at0 at1
+    ra fp gp sp pc
+];

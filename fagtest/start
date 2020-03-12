@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Cache password
+sudo -v
+
+mkdir -p logs
+
+echo "Starting emulator (logging to logs/emulator.*)"
+
+(cd firmware && ./run-emu) > logs/emulator.stdout 2> logs/emulator.stderr &
+
+
+echo "Starting updated (logging to logs/updated.*)"
+
+(sudo updated/bin/UPDATEd \
+    --onlysigned \
+    --keyfile=updated/key.priv \
+    --uid=1000 \
+    --gid=1000 \
+    --logfile=logs/updated.log) > logs/updated.stdout 2> logs/updated.stderr &
+
+
+echo "Starting PBP daemon (logging to logs/pbpd.*)"
+
+(cd protocol && ./pbpd -cmdDingctl ../firmware/dingctl -address=[::]:1337 -action=listen) > logs/pbpd.stdout 2> logs/pbpd.stderr &
+
+
+echo "Starting PBP proxy (logging to logs/proxy.*)"
+
+(cd protocol && ./proxy -source [::]:1338 -destination [::]:1337 -latency 50 -droprate 10) > logs/proxy.stdout 2> logs/proxy.stderr &

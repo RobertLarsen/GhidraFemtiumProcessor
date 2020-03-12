@@ -1,0 +1,110 @@
+          .--------------------------------------------------------.
+          |               UMBRELLA TECH Inc. UPDATEd               |
+          |                                                        |
+          |  Military Grade Software Updates for Your IoT Devices  |
+          '--------------------------------------------------------'
+
+UPDATEd is a lightweight, fast and scalable, zero config, optionally statically
+compiled software update daemon especially well suited for IoT devices with
+scarce resources.
+
+= Running UPDATEd
+
+= Creating an UPD image
+
+Software updates are packaged into `.upd` files using the patented UPdBUNDLE
+utility.
+
+== Simple usage
+
+As an example, suppose the file `/remote/path/to/file` on your device has to be
+updated to a newer version; the local file `file`.  The following command will
+save this update to `update.upd`:
+
+```
+$ UPdBUNDLE -o update.upd --file /remote/path/to/file @file
+```
+
+As another example, also suppose that the command `service tumblr2toast restart`
+should run after the file has been written.  This can be accomplished by
+appending `--exec "service tumblr2toast restart"` to the previous command.
+
+== Symbolic links
+
+Symbolic links can be created using `--link /path/to/src /path/to/dst`.
+
+== File permissions
+
+The default of inheriting the permissions of the source file can be overwritten
+like this:
+
+```
+$ UPdBUNDLE -o update.upd --file /path/to/file(0600) @file
+```
+
+The above command will create `/path/to/file` with read and write permissions
+for the owner and no other permissions.
+
+== Signing
+
+UPD images can be signed.  This is especially valuable if the target device is
+located in a hostile environment (such as the Internet).
+
+UPDATEd uses state-of-the-art cryptography (HMAC-SHA256) to ensure that no
+un-intended updates will ever find their way to your devices.
+
+Use the UPdBUNDLE options `--sign --keyfile master.key` to sign an UPD image.
+The key should be stored in the file `master.key`.  Notice that the key must be
+present on any device that should be able to receive the update.
+
+== Compression
+
+UPD images can be compressed using the extremely fast lossless compression
+algorithm LZ4 using the option `--compress`.
+
+== Encryption
+
+Encryption is supported using the ARC4 encryption algorithm.  The ARC4 algorithm
+is tried and tested in many fields such as WiFi networks or encrypted PDF
+documents.  Furthermore we have undergone thorough internal testing without
+finding any signs of weaknesses.  ARC4 encrypts your data on a per-byte level
+which completely avoids any risk of padding oracle attacks.
+
+Use the `--encrypt` option to produce an encrypted ARC4 image.  Notice that a
+key is needed both for encryption and decryption on the remote device.
+
+== Checksum
+
+To protect against data corruption during transfer to the remote device UPD
+images can be augmented with a checksum of each contained object (command, file
+or symbolic link).  Use the `--checksum` option.
+
+= Deploying an UPD image
+
+UPD files are received and processed by the `UPDATEd` daemon.  It supports the
+following options:
+
+--port=PORT (default: 1999):
+    Listen for connections on PORT.
+
+--tmpdir=DIR (default: /tmp):
+    Save temporary files in DIR.
+
+--logfile=FILE (default: /var/log/updated.log):
+    Save log to FILE.
+
+--uid=UID, --gid=GID (default: 1000, 1000):
+    Run as user UID and group GID.
+
+--timeout=SECONDS (default: 15*60 = 15min):
+    Abort unfinished updates after SECONDS seconds.
+
+--keyfile=FILE (default: none):
+    Master key used for signing/encryption.
+
+--onlysigned:
+    Accept only signed UPD images.  Recommended for devices connected to the
+    Internet.
+
+--onlycrypto:
+    Accept only encrypted UPD images.
