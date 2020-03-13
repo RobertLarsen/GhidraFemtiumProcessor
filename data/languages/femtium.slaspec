@@ -137,3 +137,144 @@ attach variables [ r x y ] [
 :sarx r, x, y, s is opcode=0b01100 & m=0b1110 & r & x & y & s {
     r = r ^ (x s>> (y + s));
 }
+
+####################
+# Assign immediate #
+####################
+:movi r, i << s is opcode=0b10000 & r & i & s {
+    r = i << s;
+}
+:addi r, i << s is opcode=0b10001 & r & i & s {
+    r = r + (i << s);
+}
+
+##########################
+# Conditional evaluation #
+##########################
+
+@define CMP_NZ  "0b0000"
+@define CMP_LEU "0b0001"
+@define CMP_LTU "0b0010"
+@define CMP_EQ  "0b0011"
+@define CMP_EZ  "0b0100"
+@define CMP_GTU "0b0101"
+@define CMP_GEU "0b0110"
+@define CMP_NE  "0b0111"
+@define CMP_LE  "0b1001"
+@define CMP_LT  "0b1010"
+@define CMP_GT  "0b1101"
+@define CMP_GE  "0b1110"
+
+macro compare(_op, _a, _b, _cmp_res) {
+    if (!(_op == $(CMP_NZ))) goto <A>;
+    _cmp_res = (_a != 0);
+    goto <l>;
+    <A>
+    if (!(_op == $(CMP_LEU))) goto <B>;
+    _cmp_res = (_a <= _b);
+    goto <l>;
+    <B>
+    if (!(_op == $(CMP_LTU))) goto <C>;
+    _cmp_res = (_a < _b);
+    goto <l>;
+    <C>
+    if (!(_op == $(CMP_EQ))) goto <D>;
+    _cmp_res = (_a == _b);
+    goto <l>;
+    <D>
+    if (!(_op == $(CMP_EZ))) goto <e>;
+    _cmp_res = (_a == 0);
+    goto <l>;
+    <e>
+    if (!(_op == $(CMP_GTU))) goto <F>;
+    _cmp_res = (_a > _b);
+    goto <l>;
+    <F>
+    if (!(_op == $(CMP_GEU))) goto <G>;
+    _cmp_res = (_a >= _b);
+    goto <l>;
+    <G>
+    if (!(_op == $(CMP_NE))) goto <h>;
+    _cmp_res = (_a != _b);
+    goto <l>;
+    <h>
+    if (!(_op == $(CMP_LE))) goto <I>;
+    _cmp_res = (_a s<= _b);
+    goto <l>;
+    <I>
+    if (!(_op == $(CMP_LT))) goto <J>;
+    _cmp_res = (_a s< _b);
+    goto <l>;
+    <J>
+    if (!(_op == $(CMP_GT))) goto <k>;
+    _cmp_res = (_a s> _b);
+    goto <l>;
+    <k>
+    if (!(_op == $(CMP_GE))) goto <l>;
+    _cmp_res = (_a s>= _b);
+    <l>
+}
+
+####################
+# Conditional move #
+####################
+:cmnz r, x is opcode=0b10010 & c=$(CMP_NZ) & r & x & y {
+    if (!(x != 0)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmleu r, x, y is opcode=0b10010 & c=$(CMP_LEU) & r & x & y {
+    if (!(x <= y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmltu r, x, y is opcode=0b10010 & c=$(CMP_LTU) & r & x & y {
+    if (!(x < y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmeq r, x, y is opcode=0b10010 & c=$(CMP_EQ) & r & x & y {
+    if (!(x == y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmez r, x is opcode=0b10010 & c=$(CMP_EZ) & r & x {
+    if (!(x == 0)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmgtu r, x, y is opcode=0b10010 & c=$(CMP_GTU) & r & x & y {
+    if (!(x > y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmgeu r, x, y is opcode=0b10010 & c=$(CMP_GEU) & r & x & y {
+    if (!(x >= y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmne r, x, y is opcode=0b10010 & c=$(CMP_NE) & r & x & y {
+    if (!(x != y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmle r, x, y is opcode=0b10010 & c=$(CMP_LE) & r & x & y {
+    if (!(x s<= y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmlt r, x, y is opcode=0b10010 & c=$(CMP_LT) & r & x & y {
+    if (!(x s< y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmgt r, x, y is opcode=0b10010 & c=$(CMP_GT) & r & x & y {
+    if (!(x s> y)) goto <skip>;
+    r = x;
+    <skip>
+}
+:cmge r, x, y is opcode=0b10010 & c=$(CMP_GE) & r & x & y {
+    if (!(x s>= y)) goto <skip>;
+    r = x;
+    <skip>
+}
