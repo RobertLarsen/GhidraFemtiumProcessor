@@ -282,73 +282,73 @@ macro compare(_op, _a, _b, _cmp_res) {
 ########################
 # Compare instructions #
 ########################
-:snz r, x is opcode=0b10111 & c=$(CMP_NZ) & r & x & y {
+:snz r, x is opcode=0b10011 & c=$(CMP_NZ) & r & x & y {
     r = 0;
     if (!(x != 0)) goto <skip>;
     r = 1;
     <skip>
 }
-:sleu r, x, y is opcode=0b10111 & c=$(CMP_LEU) & r & x & y {
+:sleu r, x, y is opcode=0b10011 & c=$(CMP_LEU) & r & x & y {
     r = 0;
     if (!(x <= y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sltu r, x, y is opcode=0b10111 & c=$(CMP_LTU) & r & x & y {
+:sltu r, x, y is opcode=0b10011 & c=$(CMP_LTU) & r & x & y {
     r = 0;
     if (!(x < y)) goto <skip>;
     r = 1;
     <skip>
 }
-:seq r, x, y is opcode=0b10111 & c=$(CMP_EQ) & r & x & y {
+:seq r, x, y is opcode=0b10011 & c=$(CMP_EQ) & r & x & y {
     r = 0;
     if (!(x == y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sez r, x is opcode=0b10111 & c=$(CMP_EZ) & r & x {
+:sez r, x is opcode=0b10011 & c=$(CMP_EZ) & r & x {
     r = 0;
     if (!(x == 0)) goto <skip>;
     r = 1;
     <skip>
 }
-:sgtu r, x, y is opcode=0b10111 & c=$(CMP_GTU) & r & x & y {
+:sgtu r, x, y is opcode=0b10011 & c=$(CMP_GTU) & r & x & y {
     r = 0;
     if (!(x > y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sgeu r, x, y is opcode=0b10111 & c=$(CMP_GEU) & r & x & y {
+:sgeu r, x, y is opcode=0b10011 & c=$(CMP_GEU) & r & x & y {
     r = 0;
     if (!(x >= y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sne r, x, y is opcode=0b10111 & c=$(CMP_NE) & r & x & y {
+:sne r, x, y is opcode=0b10011 & c=$(CMP_NE) & r & x & y {
     r = 0;
     if (!(x != y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sle r, x, y is opcode=0b10111 & c=$(CMP_LE) & r & x & y {
+:sle r, x, y is opcode=0b10011 & c=$(CMP_LE) & r & x & y {
     r = 0;
     if (!(x s<= y)) goto <skip>;
     r = 1;
     <skip>
 }
-:slt r, x, y is opcode=0b10111 & c=$(CMP_LT) & r & x & y {
+:slt r, x, y is opcode=0b10011 & c=$(CMP_LT) & r & x & y {
     r = 0;
     if (!(x s< y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sgt r, x, y is opcode=0b10111 & c=$(CMP_GT) & r & x & y {
+:sgt r, x, y is opcode=0b10011 & c=$(CMP_GT) & r & x & y {
     r = 0;
     if (!(x s> y)) goto <skip>;
     r = 1;
     <skip>
 }
-:sge r, x, y is opcode=0b10111 & c=$(CMP_GE) & r & x & y {
+:sge r, x, y is opcode=0b10011 & c=$(CMP_GE) & r & x & y {
     r = 0;
     if (!(x s>= y)) goto <skip>;
     r = 1;
