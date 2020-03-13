@@ -354,3 +354,68 @@ macro compare(_op, _a, _b, _cmp_res) {
     r = 1;
     <skip>
 }
+
+######################
+# Conditional branch #
+######################
+:bnz r, x is opcode=0b10111 & c=$(CMP_NZ) & r & x & j {
+    if (!(x != 0)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bleu r, x, j is opcode=0b10111 & c=$(CMP_LEU) & r & x & j {
+    if (!(x <= j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bltu r, x, j is opcode=0b10111 & c=$(CMP_LTU) & r & x & j {
+    if (!(x < j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:beq r, x, j is opcode=0b10111 & c=$(CMP_EQ) & r & x & j {
+    if (!(x == j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bez r, x, j is opcode=0b10111 & c=$(CMP_EZ) & r & x & j {
+    if (!(x == 0)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bgtu r, x, j is opcode=0b10111 & c=$(CMP_GTU) & r & x & j {
+    if (!(x > j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bgeu r, x, j is opcode=0b10111 & c=$(CMP_GEU) & r & x & j {
+    if (!(x >= j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bne r, x, j is opcode=0b10111 & c=$(CMP_NE) & r & x & j {
+    if (!(x != j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:ble r, x, j is opcode=0b10111 & c=$(CMP_LE) & r & x & j {
+    if (!(x s<= j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:blt r, x, j is opcode=0b10111 & c=$(CMP_LT) & r & x & j {
+    if (!(x s< j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bgt r, x, j is opcode=0b10111 & c=$(CMP_GT) & r & x & j {
+    if (!(x s> j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+:bge r, x, j is opcode=0b10111 & c=$(CMP_GE) & r & x & j {
+    if (!(x s>= j)) goto <skip>;
+    pc = pc + (j * 4);
+    <skip>
+}
+
