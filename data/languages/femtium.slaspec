@@ -418,3 +418,31 @@ macro compare(_op, _a, _b, _cmp_res) {
     pc = pc + (j * 4);
     <skip>
 }
+
+###############
+# Kernel mode #
+###############
+
+define pcodeop in;
+define pcodeop out;
+define pcodeop dskr;
+define pcodeop dskw;
+define pcodeop sys;
+define pcodeop iret;
+define pcodeop halt;
+
+:in r, x, y, o is opcode=0b11000 & r & x & y & o {
+    in();
+}
+:out r, x, y, o is opcode=0b11001 & r & x & y & o {
+    out();
+}
+:sys is opcode=0b11101 {
+    sys();
+}
+:iret is opcode=0b11110 {
+    iret();
+}
+:halt is opcode=0b11111 {
+    halt();
+}
