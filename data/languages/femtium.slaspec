@@ -441,6 +441,12 @@ define pcodeop halt;
 :out r, x, y, o is opcode=0b11001 & r & x & y & o {
     out();
 }
+:dskr r, x is opcode=0b11010 & r & x {
+    dskr(r, x);
+}
+:dskw r, x is opcode=0b11011 & r & x {
+    dskw(r, x);
+}
 :sys is opcode=0b11101 {
     sys();
 }
