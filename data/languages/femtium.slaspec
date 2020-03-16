@@ -358,64 +358,68 @@ macro compare(_op, _a, _b, _cmp_res) {
 ######################
 # Conditional branch #
 ######################
-:bnz r, x is opcode=0b10111 & c=$(CMP_NZ) & r & x & j {
+JumpTarget: target is j [ target = inst_start + 4 + (j * 4); ] {
+    export *:4 target;
+}
+
+:bnz r, x JumpTarget is opcode=0b10111 & c=$(CMP_NZ) & r & x & JumpTarget {
     if (!(r != 0)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bleu r, x, j is opcode=0b10111 & c=$(CMP_LEU) & r & x & j {
+:bleu r, x, JumpTarget is opcode=0b10111 & c=$(CMP_LEU) & r & x & JumpTarget {
     if (!(r <= x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bltu r, x, j is opcode=0b10111 & c=$(CMP_LTU) & r & x & j {
+:bltu r, x, JumpTarget is opcode=0b10111 & c=$(CMP_LTU) & r & x & JumpTarget {
     if (!(r < x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:beq r, x, j is opcode=0b10111 & c=$(CMP_EQ) & r & x & j {
+:beq r, x, JumpTarget is opcode=0b10111 & c=$(CMP_EQ) & r & x & JumpTarget {
     if (!(r == x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bez r, x, j is opcode=0b10111 & c=$(CMP_EZ) & r & x & j {
+:bez r, x, JumpTarget is opcode=0b10111 & c=$(CMP_EZ) & r & x & JumpTarget {
     if (!(r == 0)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bgtu r, x, j is opcode=0b10111 & c=$(CMP_GTU) & r & x & j {
+:bgtu r, x, JumpTarget is opcode=0b10111 & c=$(CMP_GTU) & r & x & JumpTarget {
     if (!(r > x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bgeu r, x, j is opcode=0b10111 & c=$(CMP_GEU) & r & x & j {
+:bgeu r, x, JumpTarget is opcode=0b10111 & c=$(CMP_GEU) & r & x & JumpTarget {
     if (!(r >= x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bne r, x, j is opcode=0b10111 & c=$(CMP_NE) & r & x & j {
+:bne r, x, JumpTarget is opcode=0b10111 & c=$(CMP_NE) & r & x & JumpTarget {
     if (!(r != x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:ble r, x, j is opcode=0b10111 & c=$(CMP_LE) & r & x & j {
+:ble r, x, JumpTarget is opcode=0b10111 & c=$(CMP_LE) & r & x & JumpTarget {
     if (!(r s<= x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:blt r, x, j is opcode=0b10111 & c=$(CMP_LT) & r & x & j {
+:blt r, x, JumpTarget is opcode=0b10111 & c=$(CMP_LT) & r & x & JumpTarget {
     if (!(r s< x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bgt r, x, j is opcode=0b10111 & c=$(CMP_GT) & r & x & j {
+:bgt r, x, JumpTarget is opcode=0b10111 & c=$(CMP_GT) & r & x & JumpTarget {
     if (!(r s> x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
-:bge r, x, j is opcode=0b10111 & c=$(CMP_GE) & r & x & j {
+:bge r, x, JumpTarget is opcode=0b10111 & c=$(CMP_GE) & r & x & JumpTarget {
     if (!(r s>= x)) goto <skip>;
-    pc = pc + (j * 4);
+    goto JumpTarget;
     <skip>
 }
 
