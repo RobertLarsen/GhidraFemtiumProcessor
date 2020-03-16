@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <compiler_spec>
     <global>
-        <range space="RAM"/>
+        <range space="ram"/>
     </global>
-    <stackpointer register="sp" space="RAM"/>
+    <stackpointer register="sp" space="ram"/>
     <returnaddress>
         <register name="ra"/>
     </returnaddress>
@@ -87,5 +87,5 @@
                 <register name="s19"/>
             </unaffected>
         </prototype>
-    </default_proto>
+        </default_proto>
 </compiler_spec>

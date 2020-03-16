@@ -2,13 +2,13 @@
 
 <language_definitions>
   <language processor="femtium"
-            endian="little"
+            endian="big"
             size="32"
             variant="default"
             version="1.0"
             slafile="femtium.sla"
             processorspec="femtium.pspec"
-            id="Femtium:LE:32:default">
+            id="Femtium:BE:32:default">
     <description>Femtium processor 32-bit little-endian</description>
     <compiler name="default" spec="femtium.cspec" id="default"/>
   </language>

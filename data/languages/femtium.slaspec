@@ -1,4 +1,4 @@
-define endian=little;
+define endian=big;
 define alignment=4;
 
 define space ram type=ram_space size=4 wordsize=4 default;
