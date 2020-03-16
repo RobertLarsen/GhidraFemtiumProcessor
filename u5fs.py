@@ -41,7 +41,7 @@ def extract_dir(fs, path, inode, entries):
             os.chown(child_path, child_inode.owner.uid, child_inode.owner.gid)
         except:
             pass
-        
+
         if child_type == DTYPE_DIR:
             extract_dir(fs, child_path + '/', child_inode, child_data)
 
