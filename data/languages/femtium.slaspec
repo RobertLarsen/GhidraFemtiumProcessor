@@ -1,7 +1,7 @@
 define endian=big;
 define alignment=4;
 
-define space ram type=ram_space size=4 wordsize=4 default;
+define space ram type=ram_space size=4 default;
 define space register type=register_space size=4;
 
 define register offset=0 size=4 [
