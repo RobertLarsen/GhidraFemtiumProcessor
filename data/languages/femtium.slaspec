@@ -42,6 +42,24 @@ attach variables [ r x y ] [
     ra fp gp sp pc
 ];
 
+
+#######################
+# Pseudo instructions #
+#######################
+:ret is opcode=0b01000 & r=63 & x=59 & y=0 & o=0 & E=0 {
+    pc = ra;
+    return [pc];
+}
+:mv r, x is opcode=0b01000 & r & x & y=0 & o=0 & E=0 {
+    r = x;
+}
+:and r, x is opcode=0b01100 & m=0b1000 & r & x & y=0 & s=0 {
+    r = r & x;
+}
+:or r, x is opcode=0b01100 & m=0b0100 & r & x & y=0 & s=0 {
+    r = r | x;
+}
+
 ##################################
 # Memory load/store instructions #
 ##################################
