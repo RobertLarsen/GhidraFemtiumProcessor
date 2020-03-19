@@ -46,9 +46,9 @@ def deductRegisterValue(ins, reg, depth=0, maxDepth=10):
               ins.getScalar(3).getValue()
     elif mnemonic == 'addi' and ins.getRegister(0).getName() == reg:
         res = deductRegisterValue(ins.getPrevious(), reg, depth+1, maxDepth) + \
-              (ins.getScalar(1).getValue() << ins.getScalar(2).getValue())
+              ins.getScalar(1).getValue()
     elif mnemonic == 'movi' and ins.getRegister(0).getName() == reg:
-        res = ins.getScalar(1).getValue() << ins.getScalar(2).getValue()
+        res = ins.getScalar(1).getValue()
     else:
         res = deductRegisterValue(ins.getPrevious(), reg, depth+1, maxDepth)
     return res
