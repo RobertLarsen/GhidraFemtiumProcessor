@@ -59,6 +59,12 @@ attach variables [ r x y ] [
 :or r, x is opcode=0b01100 & m=0b0100 & r & x & y=0 & s=0 {
     r = r | x;
 }
+# Section "7.4.7. Advanced Constraints" says that this should work:
+#:inc r is opcode=0b01000 & E=0 & r & x=r & y=0 & o=1 {
+#    r = r + 1;
+#}
+# But it doesn't
+
 
 ##################################
 # Memory load/store instructions #
@@ -159,10 +165,10 @@ attach variables [ r x y ] [
 ####################
 # Assign immediate #
 ####################
-:movi r, i << s is opcode=0b10000 & r & i & s {
+:movi r, number is opcode=0b10000 & r & i & s [number=i<<s;] {
     r = i << s;
 }
-:addi r, i << s is opcode=0b10001 & r & i & s {
+:addi r, number is opcode=0b10001 & r & i & s [number=i<<s;] {
     r = r + (i << s);
 }
 
