@@ -27,8 +27,26 @@
 #@menupath 
 #@toolbar 
 
+from java.io import FileReader, BufferedReader
 from ghidra.program.model.lang import Register
 from ghidra.program.model.listing import CodeUnit
+import ghidra.framework.Application as Application
+import os
+import re
+
+def readFile(f):
+    reader = BufferedReader(FileReader(f))
+    ln = reader.readLine()          
+    while ln:
+        yield ln
+        ln = reader.readLine()
+
+def readSyscalls():
+    syscall_token = '#define __NR_'
+    lines = readFile(Application.getModuleDataFile('Femtium', 'headers/bits/syscall.h').getFile(False))
+    return {int(l[1]):l[0] for l in [re.split('\\s+', l[len(syscall_token):]) for l in lines if l.startswith(syscall_token)]}
+
+syscalls = readSyscalls()
 
 def deductRegisterValue(ins, reg, depth=0, maxDepth=10):
     mnemonic = ins.getMnemonicString() if ins else None
@@ -62,8 +80,12 @@ listing = currentProgram.getListing()
 for f in fm.getFunctions(True):
     body = f.getBody()
     for i in [x for x in listing.getInstructions(body, True)]:
-        # Are we jumping around?
-        if i.getMnemonicString() == 'add' and \
+        if i.getMnemonicString() == 'sys':
+            a0 = deductRegisterValue(i, 'a0')
+            if a0 in syscalls:
+                i.setComment(CodeUnit.EOL_COMMENT, syscalls[a0])
+                print('Syscall {} at {}'.format(syscalls[a0], i.getAddress()))
+        elif i.getMnemonicString() == 'add' and \
            i.getRegister(0).getName() == 'pc' and \
            i.getRegister(1).getName() == 'ra' and \
            i.getRegister(2).getName() == 'zz' and \
