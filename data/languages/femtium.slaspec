@@ -42,7 +42,6 @@ attach variables [ r x y ] [
     ra fp gp sp pc
 ];
 
-
 #######################
 # Pseudo instructions #
 #######################
@@ -65,6 +64,38 @@ attach variables [ r x y ] [
 #}
 # But it doesn't
 
+RaConstructor: ra is ra { export ra; }
+At0Constructor: at0 is at0 { export at0; }
+:addret ra, pc, zz, 0xc is opcode=0b01000 & E=0 & r=59 & x=63 & y=0 & o=0xc & ra & pc & zz & RaConstructor {
+    ra = inst_next + 0xc;
+}
+
+#:movi at0, number is opcode=0b10000 & r=57 & at0 & i & s & At0Constructor [number=i<<s;] {
+#    at0 = number;
+#}
+#
+#:addi at0, number is opcode=0b10001 & r=57 & at0 & i & s & At0Constructor [number=i<<s;] {
+#    at0 = at0 + number;
+#}
+
+## add 
+#:call address is opcode=0b01000 
+#               & r
+#               & x
+#               & y
+#               & o
+#               & ra
+#               & E=0
+#               & r=63
+#               & x=63
+#               & y=57
+#               & At0Constructor
+#               & RaConstructor
+#               & ra=inst_next
+#               [address=instr_next+at0+o;]
+#               {
+#    call address;
+#}
 
 ##################################
 # Memory load/store instructions #

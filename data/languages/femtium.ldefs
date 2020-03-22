@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <language_definitions>
-  <language processor="femtium"
+  <language processor="Femtium"
             endian="big"
             size="32"
             variant="default"
