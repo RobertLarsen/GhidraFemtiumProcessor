@@ -8,14 +8,14 @@
 # This sequence of instructions is a call:
 #
 #  004199dc   add  ra, pc, zz, 0xc
-#  004199e0   movi at0, 0x133f << 0x3
-#  004199e4   addi at0, 0x7fff << 0x11
+#  004199e0   movi at0, 0x99f8
+#  004199e4   addi at0, 0xfffe0000
 #  004199e8   add  pc, pc, at0, 0x0
 #
 #  This is a jump:
 #
-#  0040a640   movi t0, 0x109 << 0x7
-#  0040a644   addi t0, 0x1 << 0x16
+#  0040a640   movi t0, 0x8480
+#  0040a644   addi t0, 0x40000
 #  0040a648   add  pc, zz, t0, 0x0
 #
 #  Jumps always use t0 and calls use at0
@@ -40,6 +40,8 @@ def deductRegisterValue(ins, reg, depth=0, maxDepth=10):
         res = 0
     elif reg == 'pc':
         res = ins.getNext().getAddress().getOffset()
+    elif mnemonic == 'addret' and reg == 'ra':
+        res = deductRegisterValue(ins, 'pc') + 0xc
     elif mnemonic == 'add' and ins.getRegister(0).getName() == reg:
         res = deductRegisterValue(ins, ins.getRegister(1).getName(), depth+1, maxDepth) + \
               deductRegisterValue(ins, ins.getRegister(2).getName(), depth+1, maxDepth) + \
