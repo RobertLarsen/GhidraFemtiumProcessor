@@ -83,8 +83,7 @@ for f in fm.getFunctions(True):
         if i.getMnemonicString() == 'sys':
             a0 = deductRegisterValue(i, 'a0')
             if a0 in syscalls:
-                i.setComment(CodeUnit.EOL_COMMENT, syscalls[a0])
-                print('Syscall {} at {}'.format(syscalls[a0], i.getAddress()))
+                i.setComment(CodeUnit.EOL_COMMENT, '{}/{}'.format(syscalls[a0], a0))
         elif i.getMnemonicString() == 'add' and \
            i.getRegister(0).getName() == 'pc' and \
            i.getRegister(1).getName() == 'ra' and \
@@ -98,10 +97,12 @@ for f in fm.getFunctions(True):
                        i.getScalar(3).getValue()) & 0xffffffff
             returnAddress = deductRegisterValue(i, 'ra') & 0xffffffff
             if returnAddress == i.getNext().getAddress().getOffset():
-                i.setComment(CodeUnit.EOL_COMMENT, "Call 0x{:x}, return to 0x{:x}".format(callAddr, returnAddress))
+                if callAddr == 0xffffffff:
+                    i.setComment(CodeUnit.EOL_COMMENT, "Call function pointer".format(callAddr, returnAddress))
+                else:
+                    i.setComment(CodeUnit.EOL_COMMENT, "Call 0x{:x}, return to 0x{:x}".format(callAddr, returnAddress))
                 call_count += 1
             else:
                 i.setComment(CodeUnit.EOL_COMMENT, 'Jump to 0x{:x}'.format(callAddr))
-                print('Jump at {}'.format(i.getAddress()))
 
 print('Found {} calls'.format(call_count))
