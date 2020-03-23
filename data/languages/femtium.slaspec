@@ -119,15 +119,16 @@ RaConstructor: ra is ra { export ra; }
 # Arithmetic instructions #
 ###########################
 At0Constructor: at0 is at0 { export at0; }
-:rcall address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=63 & y=57 & At0Constructor [address=inst_next + at0;] {
+:rcall address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=63 & y=57 & At0Constructor [address=inst_next + at0 + o;] {
     r = address;
     call [r];
 }
-:call address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=0 & y=57 & At0Constructor [address=at0;] {
+:call address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=0 & y=57 & At0Constructor [address=at0 + o;] {
     r = address;
     call [r];
 }
 :add r, x, y, o is opcode=0b01000 & E=0 & r & x & y & o {
+    # reg(r) = reg(x) + reg(y) + o
     r = x + y + o;
 }
 :mul r, x, y, o is opcode=0b01001 & E=0 & r & x & y & o {
@@ -186,12 +187,8 @@ At0Constructor: at0 is at0 { export at0; }
 ####################
 # Assign immediate #
 ####################
-:movi r, number is opcode=0b10000 & r & i & s [number=i<<s;] {
-    r = number;
-}
-:addi r, number is opcode=0b10001 & r & i & s [number=i<<s;] {
-    r = r + number;
-}
+:movi r, number is opcode=0b10000 & r & i & s [ number = i << s; ] { r = number; }
+:addi r, number is opcode=0b10001 & r & i & s [ number = i << s; ] { r = r + number; }
 
 ##########################
 # Conditional evaluation #
