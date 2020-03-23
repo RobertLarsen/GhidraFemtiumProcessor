@@ -65,7 +65,7 @@ attach variables [ r x y ] [
 # But it doesn't
 
 RaConstructor: ra is ra { export ra; }
-At0Constructor: at0 is at0 { export at0; }
+#At0Constructor: at0 is at0 { export at0; }
 :addret ra, pc, zz, 0xc is opcode=0b01000 & E=0 & r=59 & x=63 & y=0 & o=0xc & ra & pc & zz & RaConstructor {
     ra = inst_next + 0xc;
 }
@@ -76,25 +76,6 @@ At0Constructor: at0 is at0 { export at0; }
 #
 #:addi at0, number is opcode=0b10001 & r=57 & at0 & i & s & At0Constructor [number=i<<s;] {
 #    at0 = at0 + number;
-#}
-
-## add 
-#:call address is opcode=0b01000 
-#               & r
-#               & x
-#               & y
-#               & o
-#               & ra
-#               & E=0
-#               & r=63
-#               & x=63
-#               & y=57
-#               & At0Constructor
-#               & RaConstructor
-#               & ra=inst_next
-#               [address=instr_next+at0+o;]
-#               {
-#    call address;
 #}
 
 ##################################
@@ -137,6 +118,15 @@ At0Constructor: at0 is at0 { export at0; }
 ###########################
 # Arithmetic instructions #
 ###########################
+At0Constructor: at0 is at0 { export at0; }
+:rcall address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=63 & y=57 & At0Constructor [address=inst_next + at0;] {
+    r = address;
+    call [r];
+}
+:call address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=0 & y=57 & At0Constructor [address=at0;] {
+    r = address;
+    call [r];
+}
 :add r, x, y, o is opcode=0b01000 & E=0 & r & x & y & o {
     r = x + y + o;
 }
@@ -197,10 +187,10 @@ At0Constructor: at0 is at0 { export at0; }
 # Assign immediate #
 ####################
 :movi r, number is opcode=0b10000 & r & i & s [number=i<<s;] {
-    r = i << s;
+    r = number;
 }
 :addi r, number is opcode=0b10001 & r & i & s [number=i<<s;] {
-    r = r + (i << s);
+    r = r + number;
 }
 
 ##########################
@@ -487,6 +477,7 @@ define pcodeop out;
 define pcodeop dskr;
 define pcodeop dskw;
 define pcodeop sys;
+define pcodeop bind;
 define pcodeop iret;
 define pcodeop halt;
 
