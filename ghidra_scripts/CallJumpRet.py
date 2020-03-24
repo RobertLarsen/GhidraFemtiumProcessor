@@ -33,6 +33,7 @@ from ghidra.program.model.listing import CodeUnit
 import ghidra.framework.Application as Application
 import os
 import re
+import string
 
 def readFile(f):
     reader = BufferedReader(FileReader(f))
@@ -84,6 +85,12 @@ for f in fm.getFunctions(True):
             a0 = deductRegisterValue(i, 'a0')
             if a0 in syscalls:
                 i.setComment(CodeUnit.EOL_COMMENT, '{}/{}'.format(syscalls[a0], a0))
+        elif i.getMnemonicString() == 'out':
+            c = deductRegisterValue(i, i.getRegister(0).getName())
+            if c >= 0 and c < 256:
+                c = chr(c)
+                if c in string.printable:
+                    i.setComment(CodeUnit.EOL_COMMENT, 'Put {}'.format(repr(c)))
         elif i.getMnemonicString() == 'add' and \
            i.getRegister(0).getName() == 'pc' and \
            i.getRegister(1).getName() == 'ra' and \
