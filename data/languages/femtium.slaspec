@@ -119,8 +119,9 @@ RaConstructor: ra is ra { export ra; }
 # Arithmetic instructions #
 ###########################
 At0Constructor: at0 is at0 { export at0; }
-:rcall address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=63 & y=57 & At0Constructor [address=inst_next + at0 + o;] {
-    r = address;
+:rcall At0Constructor + o is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=63 & y=57 & At0Constructor {
+    local addr = inst_next + At0Constructor + o;
+    r = addr;
     call [r];
 }
 :call address is opcode=0b01000 & E=0 & r & x & y & o & r=63 & x=0 & y=57 & At0Constructor [address=at0 + o;] {
